@@ -343,14 +343,57 @@ footer .legal{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding
 @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 
 .jmedia iframe{width:100%;height:100%;border:0;display:block}
+html.locked,html.locked body{overflow:hidden}
+#login{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px 16px;background:linear-gradient(90deg,rgba(8,20,40,.94),rgba(8,20,40,.72)),url("img/portada.jpg") 70% center/cover no-repeat,#0B1F3A;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#login[hidden]{display:none}
+#login .card{width:100%;max-width:400px;background:#fff;color:#0E1A2B;border-radius:18px;padding:30px 26px;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:16px}
+#login .head{display:flex;align-items:center;gap:12px}
+#login .head svg{width:40px;height:44px;flex:none}
+#login h1{font-family:Sora,"Segoe UI",system-ui,sans-serif;font-size:21px;line-height:1.15;margin:0;letter-spacing:-.01em}
+#login .head small{display:block;color:#56657A;font-size:13px;font-weight:500}
+#login label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#56657A}
+#login input{font:inherit;font-size:16px;color:#0E1A2B;background:#fff;border:1px solid #CED6E0;border-radius:10px;padding:11px 12px;min-height:46px}
+#login input:focus{outline:none;border-color:#1D3A63;box-shadow:0 0 0 3px rgba(29,58,99,.18)}
+#login .go{min-height:48px;border:0;border-radius:10px;background:#0B1F3A;color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+#login .go:hover{background:#1D3A63}#login .go:disabled{opacity:.6;cursor:wait}
+#login .err{color:#C2413B;font-size:14px;margin:0}#login .err:empty,#login .info:empty{display:none}
+#login .info{color:#0E8F8F;font-size:14px;margin:0}
+#login .links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px}
+#login .links button,#login .links a{background:none;border:0;padding:6px 0;color:#1D3A63;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+#login .links button:hover,#login .links a:hover{text-decoration:underline}
+.brand .right .logout{min-height:34px;padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.brand .right .logout:hover{background:rgba(255,255,255,.1)}
+
+/* acceso y panel en la misma página */
+.nav .acceso{flex:none;gap:6px}.nav .acceso svg{width:16px;height:16px}
+#panelFrame{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:90;background:#F5F7FA}
+html.panel-open,html.panel-open body{overflow:hidden}
+#login .card{position:relative}
+@media (max-width:640px){.nav .wrap{gap:10px}.nav .acceso{padding:7px 10px;min-width:40px}.nav .acceso span{display:none}.emblem small{display:none}}
+@media (max-width:440px){.nav .cta-mini.outline-light{display:none}.nav .acceso{margin-left:auto}.nav .cta-mini.gold~.acceso{margin-left:0}.emblem{gap:8px;min-width:0}.emblem svg{width:28px;height:32px}.emblem b{font-size:13.5px}.nav .cta-mini.gold{padding:7px 12px}}
+@media (max-width:360px){.emblem b{font-size:13px}}
 </style>
 </head>
 <body>
+<div id="login" hidden>
+  <form class="card" id="lg-form" novalidate>
+    <div class="head"><svg viewBox="0 0 38 42" aria-hidden="true"><path d="M19 1 37 6v15c0 10-8 17-18 20C9 38 1 31 1 21V6z" fill="#C9A24B"/><path d="M19 4.5 34 8.7v12.1c0 8.1-6.4 13.9-15 16.6-8.6-2.7-15-8.5-15-16.6V8.7z" fill="#0B1F3A"/><circle cx="19" cy="19" r="7.5" fill="none" stroke="#E2C27A" stroke-width="2"/><path d="M9 31h20" stroke="#E2C27A" stroke-width="2" stroke-linecap="round"/></svg>
+      <div><h1>Panel de la organización</h1><small>Copa Logística Valencia</small></div></div>
+    <label for="lg-email">Correo<input id="lg-email" type="email" autocomplete="username" inputmode="email" required></label>
+    <label for="lg-pass">Contraseña<input id="lg-pass" type="password" autocomplete="current-password" required></label>
+    <p class="err" id="lg-err" role="alert"></p><p class="info" id="lg-info" role="status"></p>
+    <button class="go" id="lg-btn" type="submit">Entrar</button>
+    <div class="links"><button type="button" id="lg-reset">He olvidado la contraseña</button><button type="button" id="lg-close">Cancelar</button></div>
+  </form>
+</div>
+
 <div id="root"></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script src="config.js"></script>
 <script src="portada.js"></script>
+<script src="sesion.js"></script>
 </body>
 </html>

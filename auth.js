@@ -2,7 +2,11 @@
    La protección real está en las reglas de Firestore: solo el UID de la organización puede leer o escribir los datos privados. */
 (function(){
   "use strict";
+  var EMBED=window.parent!==window&&/[?&]embed=1/.test(location.search);
+  /* El panel vive dentro de la portada: abrir admin.html directamente lleva a la misma web con el acceso abierto. */
+  if(!EMBED){location.replace("./#panel");return;}
   var ADMIN=window.COPA_ADMIN_UID;
+  var tell=function(type){try{window.parent.postMessage({type:type},location.origin);}catch(e){}};
   firebase.initializeApp(window.COPA_FIREBASE);
   var auth=firebase.auth(),fs=firebase.firestore();
   auth.useDeviceLanguage();
@@ -18,12 +22,13 @@
     if(c==="auth/user-disabled")return"Esta cuenta está desactivada.";
     return"No se ha podido iniciar sesión. Inténtalo de nuevo.";}
   function addLogout(u){var box=document.querySelector(".brand .right");if(!box||document.getElementById("logoutBtn"))return;
+    var v=document.createElement("button");v.id="portadaBtn";v.type="button";v.className="logout";v.textContent="Ver portada";v.title="Volver a la portada pública";
+    v.addEventListener("click",function(){tell("copa:portada");});box.appendChild(v);
     var b=document.createElement("button");b.id="logoutBtn";b.type="button";b.className="logout";b.textContent="Salir";b.title="Cerrar sesión ("+(u.email||"")+")";
-    b.addEventListener("click",function(){auth.signOut().then(function(){location.reload();});});box.appendChild(b);}
+    b.addEventListener("click",function(){auth.signOut().then(function(){tell("copa:logout");});});box.appendChild(b);}
   auth.onAuthStateChanged(function(u){
     if(u&&u.uid===ADMIN){hide();resolveReady(u);setTimeout(function(){addLogout(u);},0);}
-    else if(u){auth.signOut();show("Esta cuenta no tiene acceso al panel.");}
-    else show();});
+    else{tell("copa:logout");}});
   form.addEventListener("submit",function(ev){ev.preventDefault();err.textContent="";info.textContent="";
     var email=$("lg-email").value.trim(),pass=$("lg-pass").value;
     if(!email||!pass){err.textContent="Escribe tu correo y tu contraseña.";return;}

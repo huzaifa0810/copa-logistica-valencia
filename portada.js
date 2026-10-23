@@ -86,7 +86,8 @@ function emblem(){return svg(`<svg viewBox="0 0 38 42" aria-hidden="true"><defs>
 /* ---------- secciones ---------- */
 function vNav(D){return h("header",{class:"nav"},h("div",{class:"wrap"},h("a",{class:"emblem",href:"#inicio","aria-label":TITLE},emblem(),h("span",null,h("b",{text:TITLE}),h("small",{text:"Fútbol 7 · Empresas"}))),
   h("nav",{class:"links","aria-label":"Secciones"},[["#partidos","Partidos"],["#cuadro","Cuadro"],["#calendario","Calendario"],["#clasificacion","Clasificación"],["#equipos","Equipos"],DATA.jugadas.length?["#jugadas","Jugadas"]:null,["#empresas","Para empresas"]].filter(Boolean).map(([u,t])=>h("a",{href:u,text:t}))),
-  D.canJoin?h("a",{class:"btn gold sm cta-mini",href:D.form,target:"_blank",rel:"noopener noreferrer"},"Inscribirse"):h("a",{class:"btn outline-light sm cta-mini",href:"#calendario"},"Calendario")));}
+  D.canJoin?h("a",{class:"btn gold sm cta-mini",href:D.form,target:"_blank",rel:"noopener noreferrer"},"Inscribirse"):h("a",{class:"btn outline-light sm cta-mini",href:"#calendario"},"Calendario"),
+  h("button",{type:"button",class:"btn outline-light sm acceso","aria-label":window.COPA_SESSION&&window.COPA_SESSION.admin?"Abrir el panel de gestión":"Acceso organización",onclick:()=>window.copaAcceso&&window.copaAcceso()},ic('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),h("span",{text:window.COPA_SESSION&&window.COPA_SESSION.admin?"Panel":"Acceso"}))));}
 
 function vHero(P,D){const portada="img/portada.jpg";
   const fecha=P&&P.fecha?cap(fmtFecha(P.fecha)):null;
@@ -180,7 +181,7 @@ function vFooter(P,D){const mail=safeMail(P&&P.contacto);const y=(P&&P.fecha&&P.
     h("div",null,h("a",{class:"emblem",href:"#inicio"},emblem(),h("span",null,h("b",{text:TITLE}),h("small",{text:"Fútbol 7 · Empresas"}))),h("p",{class:"claim",text:"La logística también se juega en equipo."})),
     h("div",null,h("h4",{text:"Torneo"}),h("ul",null,[["#partidos","Partidos"],["#cuadro","Cuadro"],["#calendario","Calendario"],["#equipos","Equipos"]].map(([u,t])=>h("li",null,h("a",{href:u,text:t}))))),
     h("div",null,h("h4",{text:"Contacto"}),h("ul",null,mail?h("li",null,h("a",{href:"mailto:"+mail,text:mail})):h("li",{text:"Datos de contacto próximamente"}),D.canJoin?h("li",null,h("a",{href:D.form,target:"_blank",rel:"noopener noreferrer",text:"Formulario de inscripción"})):null)),
-    h("div",{class:"legal"},h("span",{text:`© ${y} ${TITLE}`}),h("span",{class:"row",style:"gap:16px"},h("span",{text:P&&P.actualizado?`Datos actualizados el ${fmtDT(P.actualizado)}`:"Página informativa del torneo"}),h("a",{href:"admin.html",text:"Acceso organización"})))));}
+    h("div",{class:"legal"},h("span",{text:`© ${y} ${TITLE}`}),h("span",{class:"row",style:"gap:16px"},h("span",{text:P&&P.actualizado?`Datos actualizados el ${fmtDT(P.actualizado)}`:"Página informativa del torneo"}),h("a",{href:"#panel",onclick:ev=>{ev.preventDefault();window.copaAcceso&&window.copaAcceso();},text:"Acceso organización"})))));}
 
 /* ---------- jugadas (enlaces de YouTube, Instagram o TikTok gestionados desde el panel) ---------- */
 function ytId(u){try{const x=new URL(u);if(/(^|\.)youtu\.be$/.test(x.hostname))return x.pathname.slice(1).split("/")[0]||null;
