@@ -8,7 +8,7 @@
   function setHash(h){try{history.replaceState(null,"",h?"#"+h:location.pathname+location.search);}catch(e){}}
   function showLogin(msg){$("login").hidden=false;document.documentElement.classList.add("locked");$("lg-err").textContent=msg||"";$("lg-info").textContent="";setTimeout(function(){$("lg-email").focus();},50);}
   function hideLogin(){$("login").hidden=true;document.documentElement.classList.remove("locked");}
-  function openPanel(){if(frame)return;frame=document.createElement("iframe");frame.id="panelFrame";frame.title="Panel de la organización";frame.src="admin.html?embed=1";
+  function openPanel(){if(frame)return;frame=document.createElement("iframe");frame.id="panelFrame";frame.title="Panel de la organización";frame.src="admin.html?embed=1&v=20261023b";
     document.body.appendChild(frame);document.documentElement.classList.add("panel-open");setHash("panel");}
   function closePanel(){if(frame){frame.remove();frame=null;}document.documentElement.classList.remove("panel-open");setHash("");if(typeof render==="function")render();}
   window.copaAcceso=function(){if(window.COPA_SESSION.admin)openPanel();else{openAfterLogin=true;showLogin();}};
